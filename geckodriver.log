@@ -1,0 +1,135 @@
+1614125256778	geckodriver	INFO	Listening on 127.0.0.1:49731
+1614125256804	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofilevWTN9t"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614125260138	Marionette	INFO	Listening on port 49736
+1614125260231	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.wcostream.com/, line 1210: TypeError: window.vdo_ai_banner_ is undefined
+JavaScript error: https://www.wcostream.com/search, line 274: TypeError: window.vdo_ai_banner_ is undefined
+JavaScript warning: https://jsc.adskeeper.com/w/c/wcostream.com.861438.js, line 1: WebGL context was lost.
+JavaScript warning: https://jsc.adskeeper.com/w/c/wcostream.com.861438.js, line 1: WebGL context was lost.
+JavaScript warning: https://jsc.adskeeper.com/w/c/wcostream.com.861445.js, line 1: WebGL context was lost.
+JavaScript warning: https://jsc.adskeeper.com/w/c/wcostream.com.861445.js, line 1: WebGL context was lost.
+JavaScript error: https://www.wcostream.com/inc/video-js/video.min.js?v=7.3.0, line 12: Error: Invalid target; must be a DOM node or evented object.
+JavaScript error: https://a.vdo.ai/core/dependencies_stories_v1/vdo.min.js, line 37: ReferenceError: logError is not defined
+JavaScript error: https://a.vdo.ai/core/dependencies_stories_v1/vdo.min.js, line 37: ReferenceError: logError is not defined
+JavaScript error: https://a.vdo.ai/core/dependencies_stories_v1/vdo.min.js, line 37: ReferenceError: logError is not defined
+1614128571346	Marionette	INFO	Stopped listening on port 49736
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614133504118	geckodriver	INFO	Listening on 127.0.0.1:53843
+1614133504141	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofile7hfrJX"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614133507079	Marionette	INFO	Listening on port 53848
+1614133507133	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.wcostream.com/, line 1210: TypeError: window.vdo_ai_banner_ is undefined
+JavaScript error: https://www.wcostream.com/search, line 274: TypeError: window.vdo_ai_banner_ is undefined
+JavaScript error: https://www.wcostream.com/inc/animeuploads/report.js, line 1: ReferenceError: $ is not defined
+JavaScript error: https://www.wcostream.com/inc/animeuploads/embed.php?file=Naruto%2FNaruto%20-%20001%20-%20Enter%20Naruto%20Uzumaki%21%20%5BC-W%5D%20%28HQ%29%20%28v2%29.flv&pid=46712&h=d46c79c16b91ec18edb133c833dfd316&t=1614144384, line 370: ReferenceError: $ is not defined
+JavaScript error: https://www.wcostream.com/inc/animeuploads/embed.php?file=Naruto%2FNaruto%20-%20001%20-%20Enter%20Naruto%20Uzumaki%21%20%5BC-W%5D%20%28HQ%29%20%28v2%29.flv&pid=46712&h=d46c79c16b91ec18edb133c833dfd316&t=1614144384, line 353: ReferenceError: $ is not defined
+1614134778961	Marionette	INFO	Stopped listening on port 53848
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614144806163	geckodriver	INFO	Listening on 127.0.0.1:55643
+1614144806190	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofilesFq0R9"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614144808864	Marionette	INFO	Listening on port 55648
+1614144809010	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+1614144910129	geckodriver	INFO	Listening on 127.0.0.1:56176
+1614144910154	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileZDdAi9"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614144913269	Marionette	INFO	Listening on port 56181
+1614144913365	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+1614145046683	geckodriver	INFO	Listening on 127.0.0.1:56850
+1614145046707	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileOLXMJC"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614145050031	Marionette	INFO	Listening on port 56855
+1614145050095	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614145067951	Marionette	INFO	Stopped listening on port 56855
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614148417957	geckodriver	INFO	Listening on 127.0.0.1:54988
+1614148417986	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileP1AZya"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614148420497	Marionette	INFO	Listening on port 54993
+1614148420584	Marionette	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+1614148594772	geckodriver	INFO	Listening on 127.0.0.1:55820
+1614148594797	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofilebIhvLI"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614148597408	Marionette	INFO	Listening on port 55825
+1614148597480	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614148737651	geckodriver	INFO	Listening on 127.0.0.1:56523
+1614148737676	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofile6afJdN"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614148740365	Marionette	INFO	Listening on port 56528
+1614148740460	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614148868880	geckodriver	INFO	Listening on 127.0.0.1:57172
+1614148868908	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofiley7zeWd"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614148871703	Marionette	INFO	Listening on port 57177
+1614148871783	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614149115499	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+1614149248552	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+1614149379773	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.
+1614173385223	geckodriver	INFO	Listening on 127.0.0.1:50123
+1614173386175	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileGbjqwS"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614173390442	Marionette	INFO	Listening on port 50135
+1614173390490	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614173672883	Marionette	INFO	Stopped listening on port 50135
+1614177415095	geckodriver	INFO	Listening on 127.0.0.1:50503
+1614177415119	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileWZDvut"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614177418591	Marionette	INFO	Listening on port 50512
+1614177418696	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614177435162	Marionette	INFO	Stopped listening on port 50512
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614177517044	geckodriver	INFO	Listening on 127.0.0.1:50638
+1614177517066	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofilew6V9jx"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614177519908	Marionette	INFO	Listening on port 50647
+1614177519949	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614177535991	Marionette	INFO	Stopped listening on port 50647
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
