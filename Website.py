@@ -14,7 +14,7 @@ class Website:
         self.ids = []
         self.names = []
         self.tags = []
-
+## Setters / Getters ## 
     def URL(self, url):
         """ Append url to urls list """
         self.urls.append(url)
@@ -49,3 +49,4 @@ class Website:
     def gTag(self):
         """ LIFO return tag """
         return self.tags.pop()
+##  ##
