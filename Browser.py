@@ -1,3 +1,4 @@
+from os import getpid
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -35,6 +36,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			assert(type(driver_path)) == str ## Sanity-Check path is a string
 			self.options = Options()
 			self.options.headless = headless
+			#self.pid = getpid()		# Useful | Not Useful ? Maybe. Need a way to get the firefox PID 
 			self.driver = webdriver.Firefox(options=self.options, executable_path=driver_path)
 		except Exception as e:
 			print("[!!] Unable to initialize Browser Class [!!]\n\n{}".format(e))
@@ -42,9 +44,9 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		print(f"{bcolors.HEADER}[+] Successfully Instantiated Browser Class{bcolors.ENDC}")
 		print(f"{bcolors.OKGREEN}[+] Headless{bcolors.ENDC} firefox now running...") if headless else print("[+] Firefox now running...")
 		print(f"[*] Please call {bcolors.OKCYAN}Browser.usage(){bcolors.ENDC} for help. Otherwise dir(Browser) and help(Browser) will also work.\n")
+		
 
-
-	def usage(self):
+	def usage(self): ## TODO: Need to update once class is finalized
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.get( url ){bcolors.ENDC} will move the browser to the requested page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getTitle(){bcolors.ENDC} will return the title of the current page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getURL(){bcolors.ENDC} will get the URL of the current page")
@@ -83,6 +85,16 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		""" Forward One Page """
 		self.driver.forward()
 
+
+	def movetoElement(self, element):
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			self.getActionObject().move_to_element(element).perform()
+		except Exception as e:
+			print(f"{bcolors.FAIL}[!] Unable to move cursor to given element{bcolors.ENDC}\n")
+			print("{}".format(e))
+			return -1
+
 	def click(self, element):
 		""" Safely Click passed Firefox Element """
 		try:
@@ -90,6 +102,33 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			element.click()
 		except Exception as e:
 			print("Unable to click element\n{}".format(e))
+			return -1
+
+	def contextClick(self, element):
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			self.getActionObject().context_click(on_element=element).perform()
+		except Exception as e:
+			print(f"{bcolors.FAIL}[*] Failed to context click on given element\n{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
+
+	def clickHold(self, element):
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			self.getActionObject().click_and_hold(on_element=element).perform()
+		except Exception as e:
+			print(f"{bcolors.FAIL}[*] Unable to click and hold on given element\n{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
+
+	def doubleClick(self, elem):
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			self.getActionObject().double_click(on_element=element)
+		except Exception as e:
+			print(f"{bcolors.WARNING}[*] Unable to double click on given element\n{bcolors.ENDC}")
+			print("{}".format(e))
 			return -1
 
 	def switchFrame(self, element):
@@ -210,7 +249,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		""" Find link matching query """
 		try:
 			assert(type(query)) == str
-			return self.driver.find_element_by_link_text(query)
+			return self.driver.find_element_by_partial_link_text(query)
 		except Exception as e:
 			print("[*] Unable to find link by searching {}\n{}".format(query, e))
 			return -1
@@ -226,6 +265,50 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		""" Return Selenium ActionChain Object so that complex actions can be performed """
 		# Example : action.key_down(Keys.CONTROL).send_keys('F').key_up(Keys.CONTROL).perform() # CTRL-F # Brings up search bar
 		return ActionChains(self.driver)
+
+
+	def getCookies(self):
+		""" Return all cookies """
+		try:
+			return self.driver.get_cookies()
+		except Exception as e:
+			print(f"{bcolors.FAIL}[*] Unable to get cookies{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
+
+
+	def getCookie(self, name):
+		""" Return specified cookie """
+		try:
+			cookie = self.driver.get_cookie(name)
+		except Exception as e:
+			print("Could not find cookie {}\n{}".format(name,e))
+			return -1
+
+	def addCookie(self, cookie):
+		"""Cookie should be ('name' : 'foo', 'otro' : 'aqui'), i.e. tuple of dicts, and adds to browser """
+		try:
+			self.driver.add_cookie(cookie)
+		except Exception as e:
+			print("[*] Unable to add specified cookie: {}\n{}".format(cookie,e))
+			return -1
+
+
+	def delCookie(self, name):
+		try:
+			self.driver.delete_cookie(name)
+		except Exception as e:
+			print("Unable to delete specified cookie: {}\n{}".format(name, e))
+			return -1
+
+	
+	def delCookies(self):
+		try:
+			self.driver.delete_all_cookies()
+		except Exception as e:
+			print(f"{bcolors.WARNING}[!!] Unable to delete cookies!\n{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
 
 
 	def quit(self):
