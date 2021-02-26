@@ -1,4 +1,5 @@
 from os import getpid
+from psutil import process_iter # External dependency 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
@@ -30,21 +31,29 @@ Wrapper class to use Selenium as a headless Browser
 Requires path to geckodriver. Default second boolean argument headless=True. # can be changed if geckodriver is in PATH
 Meant as a semi-secure interface for Selenium browsing, however each selenium object has a pointer to its 'parent', i.e. the driver object
 So the class does not prevent the use of webdriver functions directly, but rather is a simple mechanism to be used as a building block.  
+	Most of this based on lessons found here : https://www.geeksforgeeks.org/selenium-python-tutorial/
 	"""
 	def __init__(self, driver_path, headless=True):
 		try:
 			assert(type(driver_path)) == str ## Sanity-Check path is a string
 			self.options = Options()
 			self.options.headless = headless
-			#self.pid = getpid()		# Useful | Not Useful ? Maybe. Need a way to get the firefox PID 
+			self.pid = getpid()		# Useful | Not Useful ? Maybe. 
 			self.driver = webdriver.Firefox(options=self.options, executable_path=driver_path)
+			self.rootWindowHandle = self.driver.current_window_handle # The handle to the whole browser frame / window
+			#If there is a pop-up, we need to switch window handles, but need to be able to go back to the root
+			self.expectedChildren = "geckodriver firefox-bin".split()
+			self.pids = [] # Instantiating webdriver is a blocking call. Children should be running.
+			self.setChildPIDs()
 		except Exception as e:
 			print("[!!] Unable to initialize Browser Class [!!]\n\n{}".format(e))
 			exit(1)
 		print(f"{bcolors.HEADER}[+] Successfully Instantiated Browser Class{bcolors.ENDC}")
 		print(f"{bcolors.OKGREEN}[+] Headless{bcolors.ENDC} firefox now running...") if headless else print("[+] Firefox now running...")
 		print(f"[*] Please call {bcolors.OKCYAN}Browser.usage(){bcolors.ENDC} for help. Otherwise dir(Browser) and help(Browser) will also work.\n")
-		
+		print(f"{bcolors.HEADER}[+]{bcolors.ENDC} Current Process ID [{bcolors.HEADER} %d {bcolors.ENDC}]" % self.pid)
+		for pid in self.pids:
+			print(f"\t\t{bcolors.OKGREEN}[+]{bcolors.ENDC} Child Process ID [ {bcolors.OKGREEN} %d {bcolors.ENDC} ]" % pid)
 
 	def usage(self): ## TODO: Need to update once class is finalized
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.get( url ){bcolors.ENDC} will move the browser to the requested page")
@@ -52,6 +61,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getURL(){bcolors.ENDC} will get the URL of the current page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.back(){bcolors.ENDC} will move the browser back one page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.forward(){bcolors.ENDC} will move the browser forward one cached page")
+		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.refresh(){bcolors.ENDC} will move the browser forward one cached page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.find_tags( query ){bcolors.ENDC} and {bcolors.BOLD}{bcolors.OKCYAN}Browser.find_tag( query ){bcolors.ENDC} will search the DOM for all matched ids or the first matched id - {bcolors.OKGREEN}returns Selenium Object{bcolors.ENDC}")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.find_ids( query ){bcolors.ENDC} and {bcolors.BOLD}{bcolors.OKCYAN}Browser.find_id( query ){bcolors.ENDC} will search the DOM for all matched ids or the first matched id - {bcolors.OKGREEN}returns Selenium Object{bcolors.ENDC}")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.find_names( query ){bcolors.ENDC} and {bcolors.BOLD}{bcolors.OKCYAN}Browser.find_name( query ){bcolors.ENDC} will search the DOM for all matched names or the first matched name -{bcolors.OKGREEN}returns Selenium Object{bcolors.ENDC}")
@@ -84,8 +94,37 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 	def forward(self):
 		""" Forward One Page """
 		self.driver.forward()
+	
 
+	def refresh(self):
+		"""Refresh the current page"""
+		self.driver.refresh()
 
+	def cycleWindow(self, h=None):
+		""" Gather Window handles, check passed handle against discovered ( if passed )\
+			switch to window if handle is matched otherwise \
+			print warning if more than 2 windows open and \
+				switch to first handle in list 
+		"""
+		handles = []
+		for handle in self.driver.window_handles:
+			if handle != self.rootWindowHandle:
+					handles.append(handle)
+		if h is not None:
+			for handle in handles:
+				if handle == h:
+					self.driver.switch_to_window( handle )
+
+		if len(handles) > 1:
+			print(f"{bcolors.WARNING}[*] More than 2 windows open{bcolors.ENDC}")
+			for h in handles:
+				print("Handle: {}".format(h))
+		
+		window = handles[0] # Hardcoded default first in list
+		self.driver.switch_to_window( window )
+	## END CycleWindow ##
+
+	
 	def movetoElement(self, element):
 		try:
 			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
@@ -95,13 +134,22 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			return -1
 
-	def click(self, element):
-		""" Safely Click passed Firefox Element """
+
+	def click(self, element=None):
+		""" Safely Click passed Firefox Element or current cursor location"""
+		if element is not None:
+			try:
+				assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+				element.click()
+				return
+			except Exception as e:
+				print("Unable to click element\n{}".format(e))
+				return -1
 		try:
-			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
-			element.click()
+			self.getActionObject().click()
 		except Exception as e:
-			print("Unable to click element\n{}".format(e))
+			print(f"{bcolors.FAIL}[!!]Unable to click!\n")
+			print("{}".format(e))
 			return -1
 
 	def contextClick(self, element):
@@ -122,7 +170,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			return -1
 
-	def doubleClick(self, elem):
+	def doubleClick(self, element):
 		try:
 			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
 			self.getActionObject().double_click(on_element=element)
@@ -144,12 +192,15 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		""" Set the javascript environment / Browser Frame context to the root of the current page """
 		self.driver.switch_to.default_content()
 
-	def send_keys(self, element, query):
-		""" Safely send keys to element """
+	def sendKeys(self, query, element=None):
+		""" Safely send keys to focused || passed element """
 		try:
-			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
 			assert(type(query)) == str
-			element.send_keys(query)
+			if element is not None:
+				assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+				element.send_keys(query) # Send Keys to element
+				return 0
+			self.getActionObject().send_keys(query).perform() # Send keys to currently focused element
 		except Exception as e:
 			print("Unable to send_keys to element\n{}".format(e))
 			return -1
@@ -170,7 +221,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		return self.driver.current_url
 
 
-	def find_tag(self, query):
+	def findTag(self, query):
 		""" Find an element by tag name, e.g. 'h2', 'form', etc.. - Returns Selenium Object"""
 		try:
 			assert(type(query)) == str
@@ -180,7 +231,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			return -1
 
     
-	def find_tags(self, query):
+	def findTags(self, query):
 		""" Find elements by tag name - Returns Selenium Object"""
 		try:
 			assert(type(query)) == str
@@ -190,7 +241,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			return -1
 			
 			
-	def find_ids(self, query):							## Multiple Elements
+	def findIds(self, query):							## Multiple Elements
 		""" Find Elements by ID - Returns Selenium Object"""
 		try:
 			assert(type(query)) == str
@@ -200,7 +251,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			return -1
 			
 			
-	def find_id(self, query):							## Single Element
+	def findId(self, query):							## Single Element
 		""" Find Element by ID - Returns Selenium Object"""
 		try:
 			assert(type(query)) == str
@@ -209,16 +260,16 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("Could not find ID: {}\n\n{}".format(query, e))
 			return -1
 
-	def find_names(self, query):							## Multiple Elements
+	def findNames(self, query):							## Multiple Elements
 		""" Find Elements by Name - Returns Selenium Object"""
 		try:
-                        assert(type(query)) == str
-                        return self.driver.find_elements_by_name(query)
+			assert(type(query)) == str
+			return self.driver.find_elements_by_name(query)
 		except Exception as e:
 			print("Unable to find name {}\n\n{}".format(query, e))
 			return -1
 
-	def find_name(self, query):							## Single Element
+	def findName(self, query):							## Single Element
 		""" Find Element by Name - Returns Selenium Object"""
 		try:
 			assert(type(query)) == str
@@ -227,29 +278,75 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("Unable to find name {}\n\n{}".format(query, e))
 			return -1
 
-	def find_xpaths(self, query):							## Multiple Elements
+	def findXpaths(self, query):							## Multiple Elements
 		""" Find Elements by Xpath - Returns Selenium Object"""
 		try:
-                        assert(type(query)) == str
-                        return self.driver.find_elements_by_xpath(query)
+			assert(type(query)) == str
+			return self.driver.find_elements_by_xpath(query)
 		except Exception as e:
 			print("Unable to find xpath {}\n\n{}".format(query, e))
 			return -1
 
-	def find_xpath(self, query):							## Single Element
+	def findXpath(self, query):							## Single Element
 		""" Find Element by Xpath - Returns Selenium Object"""
 		try:
-                        assert(type(query)) == str
-                        return self.driver.find_element_by_xpath(query)
+			assert(type(query)) == str
+			return self.driver.find_element_by_xpath(query)
 		except Exception as e:
 			print("Unable to find xpath {}\n\n{}".format(query, e))
 			return -1
 
-	def find_link(self, query):
-		""" Find link matching query """
+	def findClass(self, name):
+		""" Find first class matching name """
+		try:
+			assert(type(name)) == str
+			return self.driver.find_element_by_class_name(name)
+		except Exception as e:
+			print("[*] Unable to locate class name {}\n{}".format(name, e))
+			return -1
+
+	def findClasses(self, name):
+		""" Find all classes matching name """
+		try:
+			assert(type(name)) == str
+			return self.driver.find_elements_by_class_name(name)
+		except Exception as e:
+			print("[*] Unable to locate class name {}\n{}".format(name, e))
+			return -1
+
+
+	def findCSS(self, query):
+		""" Find first CSS id matching query """
+		try:
+			assert(type(query)) == str
+			return self.driver.find_element_by_css_selector(query)
+		except Exception as e:
+			print("[*] Unable to locate CSS id {}\n{}".format(query, e))
+			return -1
+
+	def findCSSids(self, query):
+		""" Find all CSS ids matching query """
+		try:
+			assert(type(query)) == str
+			return self.driver.find_elements_by_css_selector(query)
+		except Exception as e:
+			print("[*] Unable to locate CSS id {}\n{}".format(query, e))
+			return -1
+
+	def findLink(self, query):
+		""" Find first link matching query """
 		try:
 			assert(type(query)) == str
 			return self.driver.find_element_by_partial_link_text(query)
+		except Exception as e:
+			print("[*] Unable to find link by searching {}\n{}".format(query, e))
+			return -1
+
+	def findLinks(self, query):
+		""" Find all links matching query """
+		try:
+			assert(type(query)) == str
+			return self.driver.find_elements_by_partial_link_text(query)
 		except Exception as e:
 			print("[*] Unable to find link by searching {}\n{}".format(query, e))
 			return -1
@@ -280,7 +377,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 	def getCookie(self, name):
 		""" Return specified cookie """
 		try:
-			cookie = self.driver.get_cookie(name)
+			return self.driver.get_cookie(name)
 		except Exception as e:
 			print("Could not find cookie {}\n{}".format(name,e))
 			return -1
@@ -310,6 +407,22 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			return -1
 
+	def getChildPIDs(self):
+		""" Update internal pids list of children """
+		return self.pids
+
+	def setChildPIDs(self):
+		""" Loop over running processes and compare to expexted children\
+			if match and parent is python, update internal class self.pids list
+		"""
+		pids = []
+		for proc in process_iter():
+			for child in self.expectedChildren:
+				if child == proc.name():
+					if proc.parent().name() == "Python": # Hardcoded string comparison. Sue me.
+						pids.append(proc.pid)
+		self.pids = pids
+		
 
 	def quit(self):
 		self.driver.close() # Close the current page
