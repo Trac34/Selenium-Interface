@@ -37,8 +37,9 @@ Final steps to mute, change to HD ( if available ) and then download are missing
 
 	#video_xpath = '//*[@id="video-js"]/button/span[1]' # Inside iframe, selenium cant find it. Not sure how to handle that...
 	
-	video_xpath = '/html/body/div' # Overarching container click causes video to play
+	#video_xpath = '/html/body/div' # Overarching container click causes video to play
 	## Problem is, cant find way to access video controls inside iframe
+	# Selenium has ways to step into and out of iFrames. Need to add to Browser
 
 
 	for i in links:

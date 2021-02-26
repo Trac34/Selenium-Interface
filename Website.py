@@ -8,13 +8,17 @@ class Website:
     Blame python for the function naming conventions being shitty. Would have been nice to overload the function definitions like in C++....oh well
     """
     def __init__(self, url):
-        self.base_url = url
+        import requests as r # instead of relying on caller to supply source code, this class can get it
+        self.base_url = url # Extra  dependencies - boo, I know. Comment it out and do it another way if you'd like
         self.urls = []
         self.xPaths = []
         self.ids = []
         self.names = []
         self.tags = []
+        self.source = r.get(self.base_url).content # No javascript here, just a reminder
 ## Setters / Getters ## 
+    def site(self):
+        return self.base_url
     def URL(self, url):
         """ Append url to urls list """
         self.urls.append(url)
@@ -49,4 +53,11 @@ class Website:
     def gTag(self):
         """ LIFO return tag """
         return self.tags.pop()
+
+    def setSource(self, seleniumBrowser):
+        """ Set the source code to the current page the browser is on """
+        self.source = seleniumBrowser.viewSource()
+    def viewSource(self):
+        """ Return website source code """
+        return self.source
 ##  ##

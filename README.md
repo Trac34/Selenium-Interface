@@ -23,6 +23,6 @@ __
 
 The Website class is an abstract class to build unqique objects that represent a Website
 
-HackerOne_Scrape is just a really good example of everything you should not do, but can possibly learn From
+HackerOne_Scrape is just a really good example of everything you should NOT do, but can possibly learn From
 
 CartoonScrape is just a fun little side project. Please be gentle to the servers if you choose to play with it.
