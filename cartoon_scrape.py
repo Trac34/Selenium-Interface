@@ -40,6 +40,9 @@ Final steps to mute, change to HD ( if available ) and then download are missing
 	#video_xpath = '/html/body/div' # Overarching container click causes video to play
 	## Problem is, cant find way to access video controls inside iframe
 	# Selenium has ways to step into and out of iFrames. Need to add to Browser
+	#Instead, just execute javascript! Most powerful thing selenium offers
+	driver.execute_script('document.querySelector("#video-js > div.vjs-poster").click()')
+	# No idea how to download it though. I see the link ( I think ), but how to write it to a file?
 
 
 	for i in links:

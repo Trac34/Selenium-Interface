@@ -3,6 +3,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as wait
 from time import sleep
 
 
@@ -62,6 +64,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.quit(){bcolors.ENDC} will close the browser")
 
 
+	## BEGIN Navigation ##
 	def get(self, url):
 		""" GET url. Browser will request given URL and run any javascript loaded """
 		try:
@@ -71,17 +74,6 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("[*] Unable to GET page {}\n".format(url))
 			return -1
 
-
-	def getTitle(self):
-		""" Return the title of the current page """
-		return self.driver.title
-
-
-	def getURL(self):
-		""" Return current URL """
-		return self.driver.current_url
-
-
 	def back(self):
 		""" Back One Page """
 		self.driver.back()
@@ -90,6 +82,53 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 	def forward(self):
 		""" Forward One Page """
 		self.driver.forward()
+
+	def click(self, element):
+		""" Safely Click passed Firefox Element """
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			element.click()
+		except Exception as e:
+			print("Unable to click element\n{}".format(e))
+			return -1
+
+	def switchFrame(self, element):
+		""" Safely switch context to iframe Firefox Element """
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			wait(self.driver, 10).until(EC.frame_to_be_available_and_switch_to_it(element))
+		except Exception as e:
+				print("[*] Unable to switch context to given element\n{}".format(e))
+				return -1
+	
+	def defaultFrame(self):
+		""" Set the javascript environment / Browser Frame context to the root of the current page """
+		self.driver.switch_to.default_content()
+
+	def send_keys(self, element, query):
+		""" Safely send keys to element """
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			assert(type(query)) == str
+			element.send_keys(query)
+		except Exception as e:
+			print("Unable to send_keys to element\n{}".format(e))
+			return -1
+
+	def scrollBottom(self):
+		""" Execute javascript command to scroll to bottom of the page """
+		self.driver.execute_script("window.scroll(0, document.body.scrollHeight)")
+	## END Navigation ##
+
+	## BEGIN DOM ##
+	def getTitle(self):
+		""" Return the title of the current page """
+		return self.driver.title
+
+
+	def getURL(self):
+		""" Return current URL """
+		return self.driver.current_url
 
 
 	def find_tag(self, query):
@@ -167,38 +206,25 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("Unable to find xpath {}\n\n{}".format(query, e))
 			return -1
 
-	def click(self, element):
-		""" Safely Click passed Firefox Element """
+	def find_link(self, query):
+		""" Find link matching query """
 		try:
-			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
-			element.click()
-		except Exception as e:
-			print("Unable to click element\n{}".format(e))
-			return -1
-
-	def send_keys(self, element, query):
-		""" Safely send keys to element """
-		try:
-			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
 			assert(type(query)) == str
-			element.send_keys(query)
+			return self.driver.find_element_by_link_text(query)
 		except Exception as e:
-			print("Unable to send_keys to element\n{}".format(e))
+			print("[*] Unable to find link by searching {}\n{}".format(query, e))
 			return -1
-
-	def scrollBottom(self):
-		""" Execute javascript command to scroll to bottom of the page """
-		self.driver.execute_script("window.scroll(0, document.body.scrollHeight)")
 
 
 	def viewSource(self):
 		""" Return the current page's source code """
 		return self.driver.page_source
+	## END DOM ##
 
-
+	## BEGIN Browser Control ##
 	def getActionObject(self):
 		""" Return Selenium ActionChain Object so that complex actions can be performed """
-	## Example : action.key_down(Keys.CONTROL).send_keys('F').key_up(Keys.CONTROL).perform() # CTRL-F # Brings up search bar
+		# Example : action.key_down(Keys.CONTROL).send_keys('F').key_up(Keys.CONTROL).perform() # CTRL-F # Brings up search bar
 		return ActionChains(self.driver)
 
 
@@ -212,3 +238,4 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			exit(-1)
 		print(f"{bcolors.HEADER}[-] Firefox Process Stopped{bcolors.ENDC}")
+	## End Browser Control ##
