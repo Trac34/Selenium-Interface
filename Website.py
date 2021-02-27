@@ -1,4 +1,7 @@
 
+from os import getcwd
+from os.path import isfile, isdir
+from requests import get # instead of relying on caller to supply source code, this class can get it
 ## TODO: Secure pop operations from reading passed the array length
 ## TODO: Add security to list reads to ensure array is not empty
 ## TODO: Check data that is being appended to the internal arrays
@@ -9,14 +12,14 @@ class Website:
     Pointer could be given to Parser to fill in the lists ? 
     """
     def __init__(self, url):
-        import requests as r # instead of relying on caller to supply source code, this class can get it 
+         
         self.base_url = url # Extra  dependencies - boo, I know. Comment it out and do it another way if you'd like
         self.urls = []
         self.xPaths = []
         self.ids = []
         self.names = []
         self.tags = []
-        self.source = r.get(self.base_url).content # No javascript here, just a reminder 
+        self.source = get(self.base_url).content # No javascript here, just a reminder 
 ## Setters / Getters ## 
     def site(self):
         return self.base_url
@@ -54,6 +57,18 @@ class Website:
     def gTag(self):
         """ LIFO return tag """
         return self.tags.pop()
+
+    def gFile(self, link, path=getcwd()):
+        """ Download file from given link and save it ( Default path is working directory ) """
+        if isdir(path):
+            name = link.split("/")[-1]
+            path += "/{}".format(name)
+        try:
+            with open(path, "wb") as f:
+                print("Saving {} from {}\n".format(path, link))
+                f.write( get(link).content )
+        except Exception as e:
+            print("Unable to GET file from {}\n{}".format(link, e))
 
     def setSource(self, seleniumBrowser):
         """ Set the source code to the current page the browser is on """
