@@ -6,16 +6,17 @@ class Website:
     """ 
     Abstract Class to use as an interface for building unique website Classes 
     Blame python for the function naming conventions being shitty. Would have been nice to overload the function definitions like in C++....oh well
+    Pointer could be given to Parser to fill in the lists ? 
     """
     def __init__(self, url):
-        import requests as r # instead of relying on caller to supply source code, this class can get it
+        import requests as r # instead of relying on caller to supply source code, this class can get it 
         self.base_url = url # Extra  dependencies - boo, I know. Comment it out and do it another way if you'd like
         self.urls = []
         self.xPaths = []
         self.ids = []
         self.names = []
         self.tags = []
-        self.source = r.get(self.base_url).content # No javascript here, just a reminder
+        self.source = r.get(self.base_url).content # No javascript here, just a reminder 
 ## Setters / Getters ## 
     def site(self):
         return self.base_url

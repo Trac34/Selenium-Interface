@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 from time import sleep
-
+##TODO: Update to use Browser class 
 def main():
 	"""
 Simple Selenium script to scrape Anime or Cartoons from 'watchcartoononline.io'

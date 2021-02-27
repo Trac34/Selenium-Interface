@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup as bs # External Dependency
 from os import getpid
 from psutil import process_iter # External dependency 
 from selenium import webdriver
@@ -24,14 +25,17 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
+# Class members can't be protected like in C++. Everything is public.
+# Anything with a pointer to the class can access its functions and members
+##TODO: Integrate the BeautifulSoup Parser class to supplement functions
 class Browser:
 	"""
 Wrapper class to use Selenium as a headless Browser
 Requires path to geckodriver. Default second boolean argument headless=True. # can be changed if geckodriver is in PATH
 Meant as a semi-secure interface for Selenium browsing, however each selenium object has a pointer to its 'parent', i.e. the driver object
 So the class does not prevent the use of webdriver functions directly, but rather is a simple mechanism to be used as a building block.  
-	Most of this based on lessons found here : https://www.geeksforgeeks.org/selenium-python-tutorial/
+	Not to mention that anything with a handle to the class can acess all data members directly...
+	Most of this code is based on lessons found here : https://www.geeksforgeeks.org/selenium-python-tutorial/
 	"""
 	def __init__(self, driver_path, headless=True):
 		try:
@@ -45,6 +49,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			self.expectedChildren = "geckodriver firefox-bin".split()
 			self.pids = [] # Instantiating webdriver is a blocking call. Children should be running.
 			self.setChildPIDs()
+			self.bsource = bs    # create BeautifulSoup Object to set type
 		except Exception as e:
 			print("[!!] Unable to initialize Browser Class [!!]\n\n{}".format(e))
 			exit(1)
@@ -78,10 +83,13 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 
 	## BEGIN Navigation ##
 	def get(self, url):
-		""" GET url. Browser will request given URL and run any javascript loaded """
+		""" GET url. Browser will request given URL and run any javascript loaded 
+		Loads source code into self.bsource with every successful GET request
+		"""
 		try:
 			assert(type(url)) == str
 			self.driver.get(url)
+			self.bsource = bs( self.viewSource(), "html.parser" ) # Update internal BeautifulSoup source
 		except:
 			print("[*] Unable to GET page {}\n".format(url))
 			return -1
@@ -134,6 +142,17 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			return -1
 
+	def moveOffset(self,x,y):
+		""" Moves cursor to x|y relative to current position"""
+		try:
+			assert(type(x)) == int
+			assert(type(y)) == int
+			self.getActionObject().move_by_offset(x,y).perform()
+		except Exception as e:
+			print(f"{bcolors.FAIL}[!] Failed to move cursor.\n{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
+			
 
 	def click(self, element=None):
 		""" Safely Click passed Firefox Element or current cursor location"""
@@ -407,6 +426,21 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print("{}".format(e))
 			return -1
 
+
+	def script(self, javascript, args=None):
+		try:
+			if args is not None:
+				assert(type(args)) == list
+				self.driver.execute_script(javascript, args)
+				return 0
+			self.driver.execute_script(javascript)
+		except Exception as e:
+			print(f"{bcolors.FAIL}[-]{bcolors.ENDC} Unable to execute javascript")
+			print("{}".format(e))
+			return -1
+
+				
+
 	def getChildPIDs(self):
 		""" Update internal pids list of children """
 		return self.pids
@@ -422,7 +456,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 					if proc.parent().name() == "Python": # Hardcoded string comparison. Sue me.
 						pids.append(proc.pid)
 		self.pids = pids
-		
+
 
 	def quit(self):
 		self.driver.close() # Close the current page
