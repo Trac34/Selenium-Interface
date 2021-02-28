@@ -510,7 +510,7 @@ Not to mention that anything with a handle to the class can acess all data membe
 			return -1
 
 	def addCookie(self, cookie):
-		"""Cookie should be ('name' : 'foo', 'otro' : 'aqui'), i.e. tuple of dicts, and adds to browser """
+		"""Cookie should be ({'name' : 'foo'}, {'otro' : 'aqui'}), i.e. tuple of dicts ( I think? ), and adds to browser """
 		try:
 			self.driver.add_cookie(cookie)
 		except Exception as e:
@@ -575,12 +575,13 @@ Not to mention that anything with a handle to the class can acess all data membe
 			return 2		
 
 	def getChildPIDs(self):
-		""" Update internal pids list of children """
+		""" Return internal pids list of children """
 		return self.pids
 
 	def setChildPIDs(self):
 		""" Loop over running processes and compare to expected children\
 			if match and parent is python, update internal self.pids list
+			TODO: Could update self.pids and return value here to dictionary, PID: Process_Name
 		"""
 		pids = []
 		for proc in process_iter():
