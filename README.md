@@ -30,3 +30,5 @@ CartoonScrape is just a fun little side project. Please be gentle to the servers
 TODO: Build a logger class and implement it within Browser
 
 TODO: Build our supplemental BeautifulSoup parsing functions within the Browser class
+
+TODO: Build Main Script to take both Browser and Website classes as args and uses them to scrape the site(s), writing the results to a file and/or returning them
