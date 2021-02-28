@@ -17,7 +17,7 @@ import threading # Another External dependency. Just using a thread for a pollin
 # Not sure how it works for multiprocessing / Process python module
 
 
-## How to maintain a list of bug bounty URLs ? Website Class to make unqiue website objects 
+## How to maintain a list of bug bounty URLs -> Website Class to make unqiue website objects 
 
 
 class bcolors:
@@ -34,6 +34,7 @@ class bcolors:
 # Class members can't be protected like in C++. Everything is public.
 # Anything with a pointer to the class can access its functions and members
 ##TODO: Integrate the BeautifulSoup Parser class to supplement functions
+##TODO: Create and implement logger class to use instead of print statements
 class Browser:
 	"""
 Wrapper class to use Selenium as a headless Browser
@@ -87,6 +88,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			print(f"\t\t\t{bcolors.OKGREEN}[+]{bcolors.ENDC} Child Process ID [ {bcolors.OKGREEN} %d {bcolors.ENDC} ]" % pid)
 
 	def usage(self): ## TODO: Need to update once class is finalized
+		print(f"\n{bcolors.BOLD}{bcolors.OKGREEN}Browser( path, headless=True, proxy='', tor=False){bcolors.ENDC} Class instatiation.")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.get( url ){bcolors.ENDC} will move the browser to the requested page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getTitle(){bcolors.ENDC} will return the title of the current page")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getURL(){bcolors.ENDC} will get the URL of the current page")
@@ -112,6 +114,8 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.scrollTop(){bcolors.ENDC} executes a javascript line to scroll to the Top of the current page.")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.sreenshot( path=getcwd(), name='screenshot.png', element=None ){bcolors.ENDC} creates a base64 text file under [path] with [name] or take picture of given [element].")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.viewSource(){bcolors.ENDC} returns the current page's source code.")
+		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.getText(){bcolors.ENDC} returns the all of the current page's text.")
+		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.soupSearch( query ){bcolors.ENDC} searches current page source for passed query. Takes string, list, or re.Pattern")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.script( script, args=None ){bcolors.ENDC} executes passed string as javascript in context of current page with [args] to the script as the second argument.")
 		print(f"\n{bcolors.BOLD}{bcolors.OKCYAN}Browser.actionObject(){bcolors.ENDC} returns a selenium ActionChain Object so that complex actions can be performed on the DOM.")
 		print("Example : action = Browser.actionObject()")
@@ -128,8 +132,8 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 			assert(type(url)) == str
 			self.driver.get(url)
 			self.bsource = bs( self.viewSource(), "lxml" ) # Update internal BeautifulSoup source
-		except:
-			print("[*] Unable to GET page {}\n".format(url))
+		except Exception as e:
+			print("[*] Unable to GET page {}\n{}".format(url, e))
 			return -1
 
 	def back(self):
@@ -217,7 +221,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		try:
 			self.actionObject().click()
 		except Exception as e:
-			print(f"{bcolors.FAIL}[!!]Unable to click!\n")
+			print(f"{bcolors.FAIL}[!!]Unable to click!{bcolors.ENDC}\n")
 			print("{}".format(e))
 			return -1
 
@@ -434,7 +438,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 
 	def getText(self):
 		""" Wrapper around BeautifulSoup get_text function """
-		return self.bsource.get_text()
+		return self.bsource.get_text() # "no value for 'self' in unbound method call" pylint error. Still runs. Idk. 
 
 	def soupSearch(self, query):
 		""" Function that accepts a string, list, or regex Pattern to use to search the source code of the current page """

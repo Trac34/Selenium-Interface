@@ -436,3 +436,7 @@ Exiting due to channel error.
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1614415623474	Marionette	INFO	Listening on port 64928
 1614415623584	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614416797747	Marionette	INFO	Stopped listening on port 64928
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
