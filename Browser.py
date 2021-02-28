@@ -42,7 +42,8 @@ Requires path to geckodriver. Default second boolean argument headless=True. # c
 3rd parameter is an optional proxy that should be formatted HOST:PORT
 Meant as a semi-secure interface for Selenium browsing, however each selenium object has a pointer to its 'parent', i.e. the driver object
 So the class does not prevent the use of webdriver functions directly, but rather is a simple mechanism to be used as a building block.  
-	Not to mention that anything with a handle to the class can acess all data members directly...
+Not to mention that anything with a handle to the class can acess all data members directly...
+	Arguments: Mandatory[ "/path/to/geckodriver" ], Optional[ headless=True, proxy="HOST:PORT", tor=False]
 	Most of this code is based on lessons found here : https://www.geeksforgeeks.org/selenium-python-tutorial/
 	"""
 	def __init__(self, driver_path, headless=True, proxy="", tor=False):
@@ -578,7 +579,7 @@ So the class does not prevent the use of webdriver functions directly, but rathe
 		return self.pids
 
 	def setChildPIDs(self):
-		""" Loop over running processes and compare to expexted children\
+		""" Loop over running processes and compare to expected children\
 			if match and parent is python, update internal self.pids list
 		"""
 		pids = []
