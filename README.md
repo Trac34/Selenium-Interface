@@ -29,4 +29,4 @@ CartoonScrape is just a fun little side project. Please be gentle to the servers
 
 TODO: Build a logger class and implement it within Browser
 
-TODO: Build a parser class that uses the BeautifulSoup library
+TODO: Build our supplemental BeautifulSoup parsing functions within the Browser class
