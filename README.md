@@ -21,7 +21,7 @@ __
 >>> 
 __
 
-The Website class is an abstract class to build unqique objects that represent a Website
+The Website class is an abstract class to build unique objects that represent a Website
 
 HackerOne_Scrape is just a really good example of everything you should NOT do, but can possibly learn From
 
