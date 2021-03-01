@@ -27,8 +27,16 @@ HackerOne_Scrape is just a really good example of everything you should NOT do, 
 
 CartoonScrape is just a fun little side project. Please be gentle to the servers if you choose to play with it.
 
+TODO: Build out the Website class
+
 TODO: Build a logger class and implement it within Browser
 
-TODO: Build our supplemental BeautifulSoup parsing functions within the Browser class
+TODO: Build out supplemental BeautifulSoup parsing functions within the Browser class
 
 TODO: Build Main Script to take both Browser and Website classes as args and uses them to scrape the site(s), writing the results to a file and/or returning them
+
+TODO: Define method for storing hacker names, company names, Weakness Types, Bounty, Date, Severity, and Visibility - so that we might scrape and search the site solely based on these defined attributes, i.e. we only care about these companies with specific severity levels
+
+The goal I have in mind is to reduce the complexity to simply `Scrape( Browser, Website )`, where the website object would contain the desired attributes and their locations.  
+The Browser class holds all of the navigational and scraping methods.
+Scrape acts as a controller and establishes an order to the scrape as well as handling the returned data.

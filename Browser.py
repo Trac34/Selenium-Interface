@@ -33,7 +33,8 @@ class bcolors:
 
 # Class members can't be protected like in C++. Everything is public.
 # Anything with a pointer to the class can access its functions and members
-##TODO: Integrate the BeautifulSoup Parser class to supplement functions
+##TODO: Integrate BeautifulSoup to supplement functions
+####### -> BS will parse jscript-enriched text for the data we need, Selenium is used for navigation and to load / execute javascript.
 ##TODO: Create and implement logger class to use instead of print statements
 class Browser:
 	"""
@@ -50,7 +51,7 @@ Not to mention that anything with a handle to the class can acess all data membe
 		try:
 			assert(type(driver_path)) == str ## Sanity-Check path is a string
 			self.handles = []
-			self.pids = [] # Instantiating webdriver is a blocking call. Children should be running.
+			self.pids = [] 
 			self.profile = FirefoxProfile()
 			self.options = Options()
 			self.options.headless = headless
@@ -70,7 +71,7 @@ Not to mention that anything with a handle to the class can acess all data membe
 				self.profile.set_preference("network.proxy.socks_remote_dns", False)
 				self.profile.update_preferences()
 			self.driver = webdriver.Firefox(options=self.options, firefox_profile=self.profile, executable_path=driver_path)
-			self.setChildPIDs()
+			self.setChildPIDs() # Instantiating webdriver is a blocking call. Children should be running.
 			self.rootWindowHandle = self.driver.current_window_handle # The handle to the whole browser frame / window
 			#If there is a pop-up, we need to switch window handles, but need to be able to go back to the root
 			self.bsource = bs    # create BeautifulSoup Object to set type
@@ -79,7 +80,7 @@ Not to mention that anything with a handle to the class can acess all data membe
 			# Helpful for headless browsing when unexpected pop-ups occur
 		except Exception as e:
 			print("[!!] Unable to initialize Browser Class [!!]\n\n{}".format(e))
-			exit(1)
+			exit(1) # Is it necessary to exit here? Maybe just a return code for the caller to signal exit
 		print(f"{bcolors.HEADER}[+] Successfully Instantiated Browser Class{bcolors.ENDC}")
 		print(f"{bcolors.OKGREEN}[+] Headless{bcolors.ENDC} firefox now running...") if headless else print("[+] Firefox now running...")
 		print(f"{bcolors.OKGREEN}[+] TOR{bcolors.ENDC} proxy in use...\n") if tor else print("\n")
@@ -132,7 +133,10 @@ Not to mention that anything with a handle to the class can acess all data membe
 		try:
 			assert(type(url)) == str
 			self.driver.get(url)
-			self.bsource = bs( self.viewSource(), "lxml" ) # Update internal BeautifulSoup source
+			# sleep(1) # Even tho driver.get is blocking, it returns as soon as DOM loads, without waiting for JS to run and update the DOM with the new elements
+			# wait(self.driver, 10).until( EC.visibility_of_element_located() ) # Not sure how to wait here efficiently
+			sleep(5) # A little long, but without a conditional variable to tell us when the page is ready us when to go our only choice is to nap
+			self.bsource = bs( self.viewSource(), "lxml" ) # Update internal BeautifulSoup source with new javascript-encriched code ("lxml" is faster that "html.parser")
 		except Exception as e:
 			print("[*] Unable to GET page {}\n{}".format(url, e))
 			return -1
@@ -442,7 +446,12 @@ Not to mention that anything with a handle to the class can acess all data membe
 		return self.bsource.get_text() # "no value for 'self' in unbound method call" pylint error. Still runs. Idk. 
 
 	def soupSearch(self, query):
-		""" Function that accepts a string, list, or regex Pattern to use to search the source code of the current page """
+		""" Function that accepts a string, list, or regex Pattern to use to search the source code of the current page.
+		returns a list BeautifulSoup objects. The details from each object can be searched using a selenium function -
+		that way the Browser returns a Firefox Element that can be referenced directly and acted on by the browser.
+
+		This function is ideally used for supplemental searches to inform one of the find* functions
+		"""
 		try:
 			assert(type(query)) == str or list or Pattern
 			return self.bsource.find_all(query)

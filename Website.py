@@ -10,16 +10,28 @@ class Website:
     Abstract Class to use as an interface for building unique website Classes 
     Blame python for the function naming conventions being shitty. Would have been nice to overload the function definitions like in C++....oh well
     Pointer could be given to Parser to fill in the lists ? 
+    Args to allow for full class instantiation without having to create lists with a control loop(s)
+    ....perhaps these lists are created by the Browser using the soupSearch function?
+    If these lists are to be dynamically updated as a whole, a new function or current pop/push functions with control loop?
     """
-    def __init__(self, url):
-         
-        self.base_url = url # Extra  dependencies - boo, I know. Comment it out and do it another way if you'd like
-        self.urls = []
-        self.xPaths = []
-        self.ids = []
-        self.names = []
-        self.tags = []
-        self.source = get(self.base_url).content # No javascript here, just a reminder 
+    def __init__(self, url, urls=[], xpaths=[], ids=[], names=[], tags=[]):
+        try:
+            assert(type(url)) == str
+            assert(type(urls)) == list
+            assert(type(xpaths)) == list
+            assert(type(ids)) == list
+            assert(type(names)) == list
+            assert(type(tags)) == list
+            self.base_url = url 
+            self.urls = urls
+            self.xPaths = xpaths
+            self.ids = ids
+            self.names = names
+            self.tags = tags
+            self.source = get(self.base_url).content # No javascript here, just a reminder 
+        except Exception as e:
+            print("[!!] Unable to Instantiate Website class\n{}".format(e))
+
 ## Setters / Getters ## 
     def site(self):
         return self.base_url
