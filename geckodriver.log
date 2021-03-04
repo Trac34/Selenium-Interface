@@ -1,0 +1,51 @@
+1614894222831	geckodriver	INFO	Listening on 127.0.0.1:62294
+1614894222989	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileXcJYe3"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614894227933	Marionette	INFO	Listening on port 62304
+1614894228032	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 775))
+console.error: Region.jsm: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 422))
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+Exiting due to channel error.
+[GFX1-]: Receive IPC close with reason=AbnormalShutdown
+Exiting due to channel error.
+1614894355140	geckodriver	INFO	Listening on 127.0.0.1:62874
+1614894356179	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofiledV4tn3"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614894360347	Marionette	INFO	Listening on port 62887
+1614894360406	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614895318280	Marionette	INFO	Stopped listening on port 62887
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614895407094	geckodriver	INFO	Listening on 127.0.0.1:53567
+1614895407125	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileizWPCQ"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614895411072	Marionette	INFO	Listening on port 53572
+1614895411145	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: Region.jsm: "Error fetching region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 775))
+console.error: Region.jsm: "Failed to fetch region" (new Error("TIMEOUT", "resource://gre/modules/Region.jsm", 422))
+1614895463922	Marionette	INFO	Stopped listening on port 53572
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614895776999	geckodriver	INFO	Listening on 127.0.0.1:56107
+1614895778027	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileAm2lVn"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614895782731	Marionette	INFO	Listening on port 56120
+1614895782799	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614895824348	Marionette	INFO	Stopped listening on port 56120
+JavaScript error: https://duckduckgo.com/d2916.js, line 1: TypeError: DDG.vqd is undefined
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1614895845949	geckodriver	INFO	Listening on 127.0.0.1:56687
+1614895845987	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-foreground" "-no-remote" "-profile" "/var/folders/sj/1c8q3wjn1590cm0d7n9d09f00000gn/T/rust_mozprofileKvXJMs"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614895850900	Marionette	INFO	Listening on port 56692
+1614895851021	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614895896050	Marionette	INFO	Stopped listening on port 56692
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+

@@ -40,7 +40,7 @@ class Browser:
 	"""
 Wrapper class to use Selenium as a headless Browser
 Requires path to geckodriver. Default second boolean argument headless=True. # can be changed if geckodriver is in PATH
-3rd parameter is an optional proxy that should be formatted HOST:PORT
+3rd parameter is an optional proxy that should be formatted HOST:PORT , 4th is boolean tor value.
 Meant as a semi-secure interface for Selenium browsing, however each selenium object has a pointer to its 'parent', i.e. the driver object
 So the class does not prevent the use of webdriver functions directly, but rather is a simple mechanism to be used as a building block.  
 Not to mention that anything with a handle to the class can acess all data members directly...
@@ -282,6 +282,17 @@ Not to mention that anything with a handle to the class can acess all data membe
 		except Exception as e:
 			print("Unable to send_keys to element\n{}".format(e))
 			return -1
+
+
+	def clear(self, element):
+		try:
+			assert(type(element)) == webdriver.firefox.webelement.FirefoxWebElement
+			element.clear()
+		except Exception as e:
+			print(f"{bcolors.WARNING}[*] Unable to clear given element\n{bcolors.ENDC}")
+			print("{}".format(e))
+			return -1
+
 
 	def scrollTop(self):
 		""" Execute javascript command to scroll to bottom of the page """
