@@ -40,3 +40,18 @@ TODO: Define method for storing hacker names, company names, Weakness Types, Bou
 The goal I have in mind is to reduce the complexity to simply `Scrape( Browser, Website )`, where the website object would contain the desired attributes and their locations.  
 The Browser class holds all of the navigational and scraping methods.
 Scrape acts as a controller and establishes an order to the scrape as well as handling the returned data.
+___________________________________________________________________________________________________________________________________________________________
+
+Automating False-Positive Work-flow.
+We need to update the Qualys record to avoid VULs / VITs being re-created after closure from our False Positive Workflow.
+
+Stop-Gap until we can get this integrated into SN / javascript .
+High-Level Steps:
+1.       Feed the script a False Positive record #
+2.       Search related records for hostname, IP, QID within Service-Now
+3.       Login into Qualys
+4.       Search for the asset and ensure match
+5.       Open Host Record in Qualys
+6.       Search for specific QID(s)
+7.       Close the vulnerability && Save the record
+8.       Update the SN record && Save
